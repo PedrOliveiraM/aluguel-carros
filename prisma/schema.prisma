@@ -6,3 +6,76 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Marca {
+  id        Int      @id @default(autoincrement())
+  nome      String
+  modelos   Modelo[]
+  veiculos  Veiculo[]
+}
+
+model Modelo {
+  id           Int      @id @default(autoincrement())
+  nome         String
+  anoModelo    DateTime
+  valorLocacao Float
+  marca        Marca    @relation(fields: [marcaId], references: [id])
+  marcaId      Int
+  veiculos     Veiculo[]
+}
+
+model Veiculo {
+  id            Int      @id @default(autoincrement())
+  placa         String
+  chassi        String
+  anoFabricacao DateTime
+  cor           String
+  status        String
+  marca         Marca    @relation(fields: [marcaId], references: [id])
+  modelo        Modelo   @relation(fields: [modeloId], references: [id])
+  marcaId       Int
+  modeloId      Int
+  manutencoes   Manutencao[]
+  contratos     ContratoLocacao[]
+  ocorrencias   Ocorrencia[]
+}
+
+model Manutencao {
+  id              Int      @id @default(autoincrement())
+  descricao       String
+  dataManutencao  DateTime
+  valorManutencao Float
+  veiculo         Veiculo  @relation(fields: [veiculoId], references: [id])
+  veiculoId       Int
+}
+
+model Ocorrencia {
+  id              Int      @id @default(autoincrement())
+  descricao       String
+  dataOcorrencia  DateTime
+  valorOcorrencia Float
+  veiculo         Veiculo  @relation(fields: [veiculoId], references: [id])
+  veiculoId       Int
+  contratos       ContratoLocacao[]
+}
+
+model ContratoLocacao {
+  id             Int      @id @default(autoincrement())
+  dataLocacao    DateTime
+  dataDevolucao  DateTime
+  valorContrato  Float
+  valorTotal     Float
+  status         String
+  veiculos       Veiculo[]
+  ocorrencias    Ocorrencia[]
+  pagamentos     Pagamento[]
+}
+
+model Pagamento {
+  id               Int              @id @default(autoincrement())
+  data             DateTime
+  valorPago        Float
+  formaPagamento   String
+  contrato         ContratoLocacao  @relation(fields: [contratoId], references: [id])
+  contratoId       Int
+}
