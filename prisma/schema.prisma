@@ -79,3 +79,17 @@ model Pagamento {
   contrato         ContratoLocacao  @relation(fields: [contratoId], references: [id])
   contratoId       Int
 }
+
+model Usuarios {
+  id       Int      @id @default(autoincrement())
+  nome     String
+  email    String
+  senha    String
+  tipo_usuario TipoUsuario @default(CLIENTE)
+}
+
+enum TipoUsuario {
+  ADMIN
+  FUNCIONARIO
+  CLIENTE
+}
