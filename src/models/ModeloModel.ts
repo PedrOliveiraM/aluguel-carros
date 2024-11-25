@@ -1,11 +1,11 @@
-import { Marca } from "./MarcaModel";
+import type { Marca } from './MarcaModel'
 
 export interface Modelo {
-  id: Number;
-  nome: String;
-  anoModelo: Date;
-  valorLocacao: Number;
-  marca: Marca;
-  marcaId: Number;
+  id: number
+  nome: string
+  anoModelo: Date
+  valorLocacao: number
+  marca: Marca
+  marcaId: number
   //veiculos:     Veiculo[]
 }

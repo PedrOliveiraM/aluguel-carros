@@ -1,15 +1,15 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client'
 
 interface IModelo {
-  nome: string;
-  marca_id: string;
-  anoModelo: Date;
-  valorLocacao: number;
+  nome: string
+  marca_id: string
+  anoModelo: Date
+  valorLocacao: number
 }
 
 class ModeloCreate {
   async execute({ nome, marca_id, anoModelo, valorLocacao }: IModelo) {
-    const prisma = new PrismaClient();
+    const prisma = new PrismaClient()
 
     try {
       const modelo = await prisma.modelo.create({
@@ -19,14 +19,14 @@ class ModeloCreate {
           anoModelo,
           valorLocacao,
         },
-      });
+      })
 
-      return modelo;
+      return modelo
     } catch (error) {
-      throw new Error(error instanceof Error ? error.message : String(error));
+      throw new Error(error instanceof Error ? error.message : String(error))
     } finally {
-      await prisma.$disconnect();
+      await prisma.$disconnect()
     }
   }
 }
-export { ModeloCreate };
+export { ModeloCreate }

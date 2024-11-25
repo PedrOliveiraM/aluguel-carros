@@ -1,19 +1,19 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client'
 
 class MarcaList {
   async execute() {
-    const prisma = new PrismaClient();
+    const prisma = new PrismaClient()
 
     try {
-      const marcas = await prisma.marca.findMany();
+      const marcas = await prisma.marca.findMany()
 
-      return marcas;
+      return marcas
     } catch (error) {
-      throw new Error(error instanceof Error ? error.message : String(error));
+      throw new Error(error instanceof Error ? error.message : String(error))
     } finally {
-      await prisma.$disconnect();
+      await prisma.$disconnect()
     }
   }
 }
 
-export { MarcaList };
+export { MarcaList }
