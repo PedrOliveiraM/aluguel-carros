@@ -1,95 +1,106 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
 generator client {
   provider = "prisma-client-js"
 }
 
+//datasource db {
+//  provider = "sqlite"
+//  url      = "file:./dev.db"
+//}
+
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = "postgresql://postgres:Root@123@localhost:5433/locadora_veiculos"
 }
 
-model Marca {
-  id        Int      @id @default(autoincrement())
-  nome      String
-  modelos   Modelo[]
-  veiculos  Veiculo[]
-}
 
-model Modelo {
-  id           Int      @id @default(autoincrement())
-  nome         String
-  anoModelo    DateTime
-  valorLocacao Float
-  marca        Marca    @relation(fields: [marcaId], references: [id])
-  marcaId      Int
-  veiculos     Veiculo[]
-}
-
-model Veiculo {
-  id            Int      @id @default(autoincrement())
-  placa         String
-  chassi        String
-  anoFabricacao DateTime
-  cor           String
-  status        String
-  marca         Marca    @relation(fields: [marcaId], references: [id])
-  modelo        Modelo   @relation(fields: [modeloId], references: [id])
-  marcaId       Int
-  modeloId      Int
-  manutencoes   Manutencao[]
-  contratos     ContratoLocacao[]
-  ocorrencias   Ocorrencia[]
-}
-
-model Manutencao {
-  id              Int      @id @default(autoincrement())
-  descricao       String
-  dataManutencao  DateTime
-  valorManutencao Float
-  veiculo         Veiculo  @relation(fields: [veiculoId], references: [id])
-  veiculoId       Int
-}
 
 model Ocorrencia {
-  id              Int      @id @default(autoincrement())
-  descricao       String
-  dataOcorrencia  DateTime
-  valorOcorrencia Float
-  veiculo         Veiculo  @relation(fields: [veiculoId], references: [id])
-  veiculoId       Int
-  contratos       ContratoLocacao[]
-}
-
-model ContratoLocacao {
   id             Int      @id @default(autoincrement())
-  dataLocacao    DateTime
-  dataDevolucao  DateTime
-  valorContrato  Float
-  valorTotal     Float
-  status         String
-  veiculos       Veiculo[]
-  ocorrencias    Ocorrencia[]
-  pagamentos     Pagamento[]
+  descricao      String
+  dataOcorrencia DateTime
+  valorOcorrencia Float
+
+  // Relacionamento com ContratoLocacao
+  contratoId Int
+  contrato   ContratoLocacao @relation(fields: [contratoId], references: [id])
 }
 
 model Pagamento {
-  id               Int              @id @default(autoincrement())
-  data             DateTime
-  valorPago        Float
-  formaPagamento   String
-  contrato         ContratoLocacao  @relation(fields: [contratoId], references: [id])
-  contratoId       Int
+  id             Int      @id @default(autoincrement())
+  data           DateTime
+  valorPago      Float
+  formaPagamento String
+
+  // Relacionamento com ContratoLocacao
+  contratoId Int
+  contrato   ContratoLocacao @relation(fields: [contratoId], references: [id])
 }
 
-model Usuarios {
-  id       Int      @id @default(autoincrement())
-  nome     String
-  email    String
-  senha    String
-  tipo_usuario TipoUsuario @default(CLIENTE)
+model Categoria {
+  id           Int        @id @default(autoincrement())
+  tipo         String     
+  valorLocacao Float
+  modelos      Modelo[]
 }
 
-enum TipoUsuario {
-  ADMIN
-  FUNCIONARIO
-  CLIENTE
+model Marca {
+  id      Int      @id @default(autoincrement())
+  nome    String
+  modelos Modelo[]
+}
+
+model Modelo {
+  id          Int        @id @default(autoincrement())
+  nome        String
+  anoModelo   DateTime
+  qtModelo    Int
+  veiculos    Veiculo[]
+  categoriaId Int
+  marcaId     Int
+  categoria   Categoria  @relation(fields: [categoriaId], references: [id])
+  marca       Marca      @relation(fields: [marcaId], references: [id])
+}
+
+model Veiculo {
+  id              Int              @id @default(autoincrement())
+  placa           String           @unique
+  chassi          String           @unique
+  anoFabricacao   DateTime
+  cor             String
+  status          String
+
+  // Relacionamentos
+  manutencoes     Manutencao[]
+  modeloId        Int
+  modelo          Modelo           @relation(fields: [modeloId], references: [id])
+  contratos   ContratoLocacao[] @relation("ContratoVeiculos")
+}
+
+model Manutencao {
+  id              Int        @id @default(autoincrement())
+  descricao       String
+  dataManutencao  DateTime
+  valorManutencao Float
+  veiculoId       Int
+  veiculo         Veiculo    @relation(fields: [veiculoId], references: [id])
+}
+
+model ContratoLocacao {
+  id             Int          @id @default(autoincrement())
+  dataLocacao    DateTime
+  dataDevolucao  DateTime
+  valorCaucao    Float
+  valorTotal     Float
+  status         String
+
+  // Relacionamentos
+  veiculos    Veiculo[]       @relation("ContratoVeiculos")
+  ocorrencias Ocorrencia[]
+  pagamentos  Pagamento[]
 }

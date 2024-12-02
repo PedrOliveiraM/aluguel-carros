@@ -1,14 +1,14 @@
-import { PrismaClient } from '@prisma/client'
 import dotenv from 'dotenv'
 import express from 'express'
+import router from './routers/router'
 
 dotenv.config()
+
 const app = express()
-const PORT = process.env.PORT
-const prisma = new PrismaClient()
-
+const PORTA = process.env.PORT
 app.use(express.json())
+app.use('/api', router)
 
-app.listen(PORT, () => {
-  console.log(`Servidor executando na porta: ${PORT}`)
+app.listen(PORTA, () => {
+  console.log(`Servidor em execução na porta: ${PORTA}`)
 })
