@@ -1,83 +1,72 @@
-import { prisma } from '../utils/prisma'
+import { Request, Response } from 'express';
+import { OcorrenciaService } from '../service/OcorrenciaService';
 
-import { Request, Response } from 'express'
+const ocorrenciaService = new OcorrenciaService();
 
+// Get all Ocorrencias
 export const getOcorrencias = async (req: Request, res: Response) => {
   try {
-    const ocorrencias = await prisma.ocorrencia.findMany({
-      include: {
-        contrato: true,
-      },
-    })
-    res.status(200).json(ocorrencias)
+    const ocorrencias = await ocorrenciaService.getOcorrencias();
+    res.status(200).json(ocorrencias);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to retrieve ocorrencias' })
+    res.status(500).json({ error: 'Failed to retrieve ocorrencias' });
   }
-}
+};
 
+// Get single Ocorrencia
 export const getOcorrencia = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params
-    const ocorrencia = await prisma.ocorrencia.findUnique({
-      where: { id: Number.parseInt(id) },
-      include: {
-        contrato: true,
-      },
-    })
-    if (ocorrencia) {
-      res.status(200).json(ocorrencia)
-    } else {
-      res.status(404).json({ error: 'Ocorrencia not found' })
+    const { id } = req.params;
+    const ocorrencia = await ocorrenciaService.getOcorrencia(Number(id));
+    if (!ocorrencia) {
+      return res.status(404).json({ error: 'Ocorrencia not found' });
     }
+    res.status(200).json(ocorrencia);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to retrieve ocorrencia' })
+    res.status(500).json({ error: 'Failed to retrieve ocorrencia' });
   }
-}
+};
 
+// Create Ocorrencia
 export const createOcorrencia = async (req: Request, res: Response) => {
   try {
-    const { descricao, dataOcorrencia, valorOcorrencia, contratoId } = req.body
-    const ocorrencia = await prisma.ocorrencia.create({
-      data: {
-        descricao,
-        dataOcorrencia,
-        valorOcorrencia,
-        contratoId: Number.parseInt(contratoId),
-      },
-    })
-    res.status(201).json(ocorrencia)
+    const { descricao, dataOcorrencia, valorOcorrencia, contratoId } = req.body;
+    const ocorrencia = await ocorrenciaService.createOcorrencia({
+      descricao,
+      dataOcorrencia,
+      valorOcorrencia,
+      contratoId: Number(contratoId),
+    });
+    res.status(201).json(ocorrencia);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to create ocorrencia' })
+    res.status(500).json({ error: 'Failed to create ocorrencia' });
   }
-}
+};
 
+// Update Ocorrencia
 export const updateOcorrencia = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params
-    const { descricao, dataOcorrencia, valorOcorrencia, contratoId } = req.body
-    const ocorrencia = await prisma.ocorrencia.update({
-      where: { id: Number.parseInt(id) },
-      data: {
-        descricao,
-        dataOcorrencia,
-        valorOcorrencia,
-        contratoId: Number.parseInt(contratoId),
-      },
-    })
-    res.json(ocorrencia)
+    const { id } = req.params;
+    const { descricao, dataOcorrencia, valorOcorrencia, contratoId } = req.body;
+    const ocorrencia = await ocorrenciaService.updateOcorrencia(Number(id), {
+      descricao,
+      dataOcorrencia,
+      valorOcorrencia,
+      contratoId: Number(contratoId),
+    });
+    res.json(ocorrencia);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to update ocorrencia' })
+    res.status(500).json({ error: 'Failed to update ocorrencia' });
   }
-}
+};
 
+// Delete Ocorrencia
 export const deleteOcorrencia = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params
-    await prisma.ocorrencia.delete({
-      where: { id: Number.parseInt(id) },
-    })
-    res.status(204).json({ message: 'Ocorrencia deleted successfully' })
+    const { id } = req.params;
+    await ocorrenciaService.deleteOcorrencia(Number(id));
+    res.status(204).json({ message: 'Ocorrencia deleted successfully' });
   } catch (error) {
-    res.status(500).json({ error: 'Failed to delete ocorrencia' })
+    res.status(500).json({ error: 'Failed to delete ocorrencia' });
   }
-}
+};

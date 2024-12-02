@@ -1,85 +1,74 @@
-import { Request, Response } from 'express'
-import { prisma } from '../utils/prisma'
+import { Request, Response } from 'express';
+import { ContratoLocacaoService } from '../service/ContratoLocacaoService';
 
+const contratoLocacaoService = new ContratoLocacaoService();
+
+// Get a single ContratoLocacao
 export const getContratoLocacao = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params
-    const contratoLocacao = await prisma.contratoLocacao.findUnique({
-      where: { id: Number.parseInt(id) },
-      include: {
-        veiculos: true,
-        ocorrencias: true,
-        pagamentos: true,
-      },
-    })
+    const { id } = req.params;
+    const contratoLocacao = await contratoLocacaoService.getContratoLocacao(Number(id));
     if (!contratoLocacao) {
-      return res.status(404).json({ error: 'ContratoLocacao not found' })
+      return res.status(404).json({ error: 'ContratoLocacao not found' });
     }
-    res.json(contratoLocacao)
+    res.json(contratoLocacao);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to retrieve contratoLocacao' })
+    res.status(500).json({ error: 'Failed to retrieve contratoLocacao' });
   }
-}
+};
 
+// Get all ContratoLocacoes
 export const getContratoLocacoes = async (req: Request, res: Response) => {
   try {
-    const contratoLocacoes = await prisma.contratoLocacao.findMany({
-      include: {
-        veiculos: true,
-        ocorrencias: true,
-        pagamentos: true,
-      },
-    })
-    res.json(contratoLocacoes)
+    const contratoLocacoes = await contratoLocacaoService.getContratoLocacoes();
+    res.json(contratoLocacoes);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to retrieve contratoLocacoes' })
+    res.status(500).json({ error: 'Failed to retrieve contratoLocacoes' });
   }
-}
+};
 
+// Create a new ContratoLocacao
 export const createContratoLocacao = async (req: Request, res: Response) => {
   try {
-    const { dataLocacao, dataDevolucao, valorCaucao, valorTotal, status } = req.body
-    const contratoLocacao = await prisma.contratoLocacao.create({
-      data: {
-        dataLocacao,
-        dataDevolucao,
-        valorCaucao,
-        valorTotal,
-        status,
-      },
-    })
-    res.status(201).json(contratoLocacao)
+    const { dataLocacao, dataDevolucao, valorCaucao, valorTotal, status } = req.body;
+    const contratoLocacao = await contratoLocacaoService.createContratoLocacao({
+      dataLocacao,
+      dataDevolucao,
+      valorCaucao,
+      valorTotal,
+      status,
+    });
+    res.status(201).json(contratoLocacao);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to create contratoLocacao' })
+    res.status(500).json({ error: 'Failed to create contratoLocacao' });
   }
-}
+};
 
+// Update an existing ContratoLocacao
 export const updateContratoLocacao = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params
-    const { dataLocacao, dataDevolucao, valorCaucao, valorTotal, status } = req.body
-    const contratoLocacao = await prisma.contratoLocacao.update({
-      where: { id: Number.parseInt(id) },
-      data: {
-        dataLocacao,
-        dataDevolucao,
-        valorCaucao,
-        valorTotal,
-        status,
-      },
-    })
-    res.json(contratoLocacao)
+    const { id } = req.params;
+    const { dataLocacao, dataDevolucao, valorCaucao, valorTotal, status } = req.body;
+    const contratoLocacao = await contratoLocacaoService.updateContratoLocacao(Number(id), {
+      dataLocacao,
+      dataDevolucao,
+      valorCaucao,
+      valorTotal,
+      status,
+    });
+    res.json(contratoLocacao);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to update contratoLocacao' })
+    res.status(500).json({ error: 'Failed to update contratoLocacao' });
   }
-}
+};
 
+// Delete a ContratoLocacao
 export const deleteContratoLocacao = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params
-    await prisma.contratoLocacao.delete({ where: { id: Number.parseInt(id) } })
-    res.status(204).json({ message: 'ContratoLocacao deleted' })
+    const { id } = req.params;
+    await contratoLocacaoService.deleteContratoLocacao(Number(id));
+    res.status(204).json({ message: 'ContratoLocacao deleted' });
   } catch (error) {
-    res.status(500).json({ error: 'Failed to delete contratoLocacao' })
+    res.status(500).json({ error: 'Failed to delete contratoLocacao' });
   }
-}
+};
