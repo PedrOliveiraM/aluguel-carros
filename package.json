@@ -22,6 +22,8 @@
     "express": "^4.21.1",
     "jsonwebtoken": "^9.0.2",
     "luxon": "^3.5.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
     "uuid": "^11.0.3"
   },
   "devDependencies": {
@@ -36,6 +38,8 @@
     "@types/jsonwebtoken": "^9.0.7",
     "@types/luxon": "^3.4.2",
     "@types/node": "^22.9.0",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.7",
     "biome": "^0.3.3",
     "eslint": "^9.16.0",
     "globals": "^15.13.0",

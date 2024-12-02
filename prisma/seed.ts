@@ -1,7 +1,5 @@
-import { PrismaClient } from '@prisma/client'
+import { prisma } from './../src/utils/prisma';
 import { DateTime } from 'luxon' // Para manipulação de datas de maneira mais fácil
-
-const prisma = new PrismaClient()
 
 async function main() {
   // Criar categorias

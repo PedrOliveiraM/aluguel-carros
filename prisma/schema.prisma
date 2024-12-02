@@ -8,16 +8,10 @@ generator client {
   provider = "prisma-client-js"
 }
 
-//datasource db {
-//  provider = "sqlite"
-//  url      = "file:./dev.db"
-//}
-
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://postgres:Root@123@localhost:5433/locadora_veiculos"
+  url      = env("DATABASE_URL")
 }
-
 
 
 model Ocorrencia {
