@@ -18,6 +18,18 @@ services:
     restart: always
       # ports:
       # - "6379:6379"
+  backend:
+    build: .
+    container_name: backend
+    restart: always
+    ports:
+      - "4545:4545"
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      - DATABASE_URL=postgres://postgres:password@postgres:5432/mydb
+      - REDIS_URL=redis://redis:6379/0
 
 volumes:
   postgres_data:
