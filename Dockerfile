@@ -16,4 +16,4 @@ COPY . .
 EXPOSE 4545
 
 # Comando para iniciar a aplicação
-CMD ["npm", "run", "start"]
+CMD ["npm", "run", "dev"]
