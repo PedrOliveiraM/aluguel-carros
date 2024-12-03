@@ -34,7 +34,7 @@ services:
       sh -c "
       npx prisma generate &&
       npx prisma db push &&
-      npx prisma seed
+      npx prisma db seed
       "
 
 volumes:
