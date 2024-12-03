@@ -33,8 +33,19 @@ services:
     command: >
       sh -c "
       npx prisma generate &&
-      npx prisma db push &&
-      npx prisma db seed
+      (npx prisma db push || echo 'Database schema already pushed') &&
+      node -e '
+      const { PrismaClient } = require(\"@prisma/client\");
+      const prisma = new PrismaClient();
+      prisma.user.count().then(count => {
+        if (count === 0) {
+          console.log(\"Seeding database...\");
+          require(\"./prisma/seed\");
+        } else {
+          console.log(\"Database already seeded.\");
+        }
+      }).catch(console.error).finally(() => prisma.$disconnect());
+      '
       "
 
 volumes:
