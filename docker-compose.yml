@@ -23,7 +23,7 @@ services:
     container_name: backend
     restart: always
     ports:
-      - "4545:4545"
+      - "127.0.0.1:4545:4545"
     depends_on:
       - postgres
       - redis
