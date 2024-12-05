@@ -5,6 +5,7 @@ import {
   getCategorias,
   updateCategoria,
 } from '../controllers/CategoriaController'
+import { createContratoLocacao, deleteContratoLocacao, getContratoLocacao, updateContratoLocacao } from '../controllers/ContratoLocacaoController'
 
 import {
   createManutencao,
@@ -29,6 +30,8 @@ import {
   getModelos,
   updateModelo,
 } from '../controllers/ModeloController'
+import { createOcorrencia, deleteOcorrencia, getOcorrencia, getOcorrencias, updateOcorrencia } from '../controllers/OcorrenciaController'
+import { createPagamento, deletePagamento, getPagamento, getPagamentos, updatePagamento } from '../controllers/PagamentoController'
 
 import {
   createVeiculo,
@@ -505,5 +508,285 @@ router.put('/updateVeiculo/:id', updateVeiculo)
  *         description: Veículo não encontrado.
  */
 router.delete('/deleteVeiculo/:id', deleteVeiculo)
+
+/**
+ * @swagger
+ * /createContratoLocacao:
+ *   post:
+ *     summary: Cria um novo contrato de locação
+ *     description: Cria um novo contrato de locação no sistema.
+ *     responses:
+ *       201:
+ *         description: Contrato de locação criado com sucesso.
+ *       400:
+ *         description: Erro de validação de dados.
+ */
+router.post('/createContratoLocacao', createContratoLocacao)
+
+/**
+ * @swagger
+ * /getContratosLocacao:
+ *   get:
+ *     summary: Obtém todos os contratos de locação
+ *     description: Retorna uma lista com todos os contratos de locação cadastrados.
+ *     responses:
+ *       200:
+ *         description: Lista de contratos de locação retornada com sucesso.
+ *       500:
+ *         description: Erro interno do servidor.
+ */
+router.get('/getContratosLocacao', getContratoLocacao)
+
+/**
+ * @swagger
+ * /getContratoLocacao/{id}:
+ *   get:
+ *     summary: Obtém um contrato de locação por ID
+ *     description: Retorna um contrato de locação específico com base no ID fornecido.
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: ID do contrato de locação
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Contrato de locação encontrado com sucesso.
+ *       404:
+ *         description: Contrato de locação não encontrado.
+ */
+router.get('/getContratoLocacao/:id', getContratoLocacao)
+
+/**
+ * @swagger
+ * /updateContratoLocacao/{id}:
+ *   put:
+ *     summary: Atualiza um contrato de locação
+ *     description: Atualiza os dados de um contrato de locação existente com base no ID fornecido.
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: ID do contrato de locação
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Contrato de locação atualizado com sucesso.
+ *       400:
+ *         description: Erro de validação de dados.
+ *       404:
+ *         description: Contrato de locação não encontrado.
+ */
+router.put('/updateContratoLocacao/:id', updateContratoLocacao)
+
+/**
+ * @swagger
+ * /deleteContratoLocacao/{id}:
+ *   delete:
+ *     summary: Deleta um contrato de locação
+ *     description: Deleta um contrato de locação existente com base no ID fornecido.
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: ID do contrato de locação
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Contrato de locação deletado com sucesso.
+ *       404:
+ *         description: Contrato de locação não encontrado.
+ */
+router.delete('/deleteContratoLocacao/:id', deleteContratoLocacao)
+
+/**
+ * @swagger
+ * /createOcorrencia:
+ *   post:
+ *     summary: Cria uma nova ocorrência
+ *     description: Cria uma nova ocorrência no sistema.
+ *     responses:
+ *       201:
+ *         description: Ocorrência criada com sucesso.
+ *       400:
+ *         description: Erro de validação de dados.
+ */
+router.post('/createOcorrencia', createOcorrencia)
+
+/**
+ * @swagger
+ * /getOcorrencias:
+ *   get:
+ *     summary: Obtém todas as ocorrências
+ *     description: Retorna uma lista com todas as ocorrências registradas.
+ *     responses:
+ *       200:
+ *         description: Lista de ocorrências retornada com sucesso.
+ *       500:
+ *         description: Erro interno do servidor.
+ */
+router.get('/getOcorrencias', getOcorrencias)
+
+/**
+ * @swagger
+ * /getOcorrencia/{id}:
+ *   get:
+ *     summary: Obtém uma ocorrência por ID
+ *     description: Retorna uma ocorrência específica com base no ID fornecido.
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: ID da ocorrência
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Ocorrência encontrada com sucesso.
+ *       404:
+ *         description: Ocorrência não encontrada.
+ */
+router.get('/getOcorrencia/:id', getOcorrencia)
+
+/**
+ * @swagger
+ * /updateOcorrencia/{id}:
+ *   put:
+ *     summary: Atualiza uma ocorrência
+ *     description: Atualiza os dados de uma ocorrência existente com base no ID fornecido.
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: ID da ocorrência
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Ocorrência atualizada com sucesso.
+ *       400:
+ *         description: Erro de validação de dados.
+ *       404:
+ *         description: Ocorrência não encontrada.
+ */
+router.put('/updateOcorrencia/:id', updateOcorrencia)
+
+/**
+ * @swagger
+ * /deleteOcorrencia/{id}:
+ *   delete:
+ *     summary: Deleta uma ocorrência
+ *     description: Deleta uma ocorrência existente com base no ID fornecido.
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: ID da ocorrência
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Ocorrência deletada com sucesso.
+ *       404:
+ *         description: Ocorrência não encontrada.
+ */
+router.delete('/deleteOcorrencia/:id', deleteOcorrencia)
+
+/**
+ * @swagger
+ * /createPagamento:
+ *   post:
+ *     summary: Cria um novo pagamento
+ *     description: Cria um novo pagamento no sistema.
+ *     responses:
+ *       201:
+ *         description: Pagamento criado com sucesso.
+ *       400:
+ *         description: Erro de validação de dados.
+ */
+router.post('/createPagamento', createPagamento)
+
+/**
+ * @swagger
+ * /getPagamentos:
+ *   get:
+ *     summary: Obtém todos os pagamentos
+ *     description: Retorna uma lista com todos os pagamentos registrados.
+ *     responses:
+ *       200:
+ *         description: Lista de pagamentos retornada com sucesso.
+ *       500:
+ *         description: Erro interno do servidor.
+ */
+router.get('/getPagamentos', getPagamentos)
+
+/**
+ * @swagger
+ * /getPagamento/{id}:
+ *   get:
+ *     summary: Obtém um pagamento por ID
+ *     description: Retorna um pagamento específico com base no ID fornecido.
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: ID do pagamento
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Pagamento encontrado com sucesso.
+ *       404:
+ *         description: Pagamento não encontrado.
+ */
+router.get('/getPagamento/:id', getPagamento)
+
+/**
+ * @swagger
+ * /updatePagamento/{id}:
+ *   put:
+ *     summary: Atualiza um pagamento
+ *     description: Atualiza os dados de um pagamento existente com base no ID fornecido.
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: ID do pagamento
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Pagamento atualizado com sucesso.
+ *       400:
+ *         description: Erro de validação de dados.
+ *       404:
+ *         description: Pagamento não encontrado.
+ */
+router.put('/updatePagamento/:id', updatePagamento)
+
+/**
+ * @swagger
+ * /deletePagamento/{id}:
+ *   delete:
+ *     summary: Deleta um pagamento
+ *     description: Deleta um pagamento existente com base no ID fornecido.
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: ID do pagamento
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Pagamento deletado com sucesso.
+ *       404:
+ *         description: Pagamento não encontrado.
+ */
+router.delete('/deletePagamento/:id', deletePagamento)
+
 
 export default router
